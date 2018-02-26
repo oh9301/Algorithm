@@ -20,7 +20,7 @@ public class p2780 {
 		path = new int[10][10];
 		memo = new int[1001][10];
 		for (int i = 0; i < 10; i++)
-			memo[0][i] = 1;
+			memo[1][i] = 1;
 		for (int i = 0; i < pwd.length; i++)
 			for (int j = 0; j < pwd[i].length; j++) {
 				if (pwd[i][j] == -1)
@@ -37,33 +37,28 @@ public class p2780 {
 
 		for (int t = 0; t < T; t++) {
 			int N = Integer.parseInt(br.readLine());
-			answer = 0;
-			for (int st = 0; st < 10; st++) {
-				execDFS(st, N);
+			if (N >= 2) {
+				for (int i = 2; i <= N; i++)
+					calcMemo(i);
 			}
+			answer = 0;
 			for (int i = 0; i < 10; i++) {
-				answer += memo[N-1][i];
+				answer = (answer + memo[N][i]) % 1234567;
 			}
 			System.out.println(answer);
 		}
 	}
 
-	public static int execDFS(int index, int goal) {
-		int sum = 0;
-		if(memo[goal][index] != 0)
-			return memo[goal][index];
-		if (goal == 0)
-			return 0;
-		for (int i = 0; i < 10; i++) {
-			if(index == i)
+	public static void calcMemo(int N) {
+		for (int i = 0; i < path.length; i++) {
+			if (memo[N][i] != 0)
 				continue;
-			if (path[index][i] == 1) {
-				sum += (execDFS(i, goal -1) + 1);
+			for (int j = 0; j < path.length; j++) {
+				if (path[i][j] == 1) {
+					memo[N][i] = (memo[N][i] + memo[N - 1][j]) % 1234567;
+				}
 			}
 		}
-		System.out.println(goal + "] index : " + index + " / sum : " + sum);
-		memo[goal][index] = sum;
-		return sum;
 	}
 
 }
