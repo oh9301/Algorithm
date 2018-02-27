@@ -28,7 +28,6 @@ public class p9251 {
 					dp[i][j] = ((c1[i] == c2[j]) ? 1 : dp[i-1][j]);
 				else
 					dp[i][j] = ((c1[i] == c2[j]) ? 1 : 0);
-					
 			}
 		}
 		
