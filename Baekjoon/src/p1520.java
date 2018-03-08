@@ -31,7 +31,7 @@ public class p1520 {
 		System.out.println(getPath(0, 0));
 	}
 	
-	public static int getPath(int row, int col){
+	public static int getPath(int row, int col){ 
 		if(row == M-1 && col == N-1)
 			return 1;
 		if(dpArr[row][col] > 0)
