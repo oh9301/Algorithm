@@ -35,15 +35,13 @@ public class p2105 {
 
 	public static void calcMaxDessert() {
 		boolean[] visit = new boolean[101];
+		dirEnd = 3;
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				ptResult = -1;
-				for (int k = 0; k < 4; k++) {
-					startX = i;	startY = j;
-					dirEnd = k+3;
-					searchDessertPath(k, i, j, 0, visit);
-					answer = Math.max(ptResult, answer);
-				}
+				startX = i;	startY = j;
+				searchDessertPath(0, i, j, 0, visit);
+				answer = Math.max(ptResult, answer);
 			}
 		}
 	}
@@ -53,18 +51,22 @@ public class p2105 {
 			ptResult = Math.max(ptResult, len);
 			return;
 		}
+		if(dir >= dirEnd + 1)
+			return;
 		if(visit[map[i][j]])
 			return;
 		else
 			visit[map[i][j]] = true;
-		int ni = i + posX[dir%4];
-		int nj = j + posY[dir%4];
+		int ni = i + posX[dir];
+		int nj = j + posY[dir];
 		if (ni >= 0 && nj >= 0 && ni < N && nj < N)
 			searchDessertPath(dir, ni, nj, len + 1, visit);
-		int ni2 = i + posX[(dir+1)%4];
-		int nj2 = j + posY[(dir+1)%4];
-		if (dir <= dirEnd-1 && ni2 >= 0 && nj2 >= 0 && ni2 < N && nj2 < N)
-			searchDessertPath(dir+1, ni2, nj2, len + 1, visit);
+		if(dir < dirEnd){
+			int ni2 = i + posX[dir+1];
+			int nj2 = j + posY[dir+1];
+			if (ni2 >= 0 && nj2 >= 0 && ni2 < N && nj2 < N)
+				searchDessertPath(dir+1, ni2, nj2, len + 1, visit);
+		}
 		visit[map[i][j]] = false;
 	}
 
