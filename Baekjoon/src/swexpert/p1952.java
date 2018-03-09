@@ -6,11 +6,10 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class p1952 {
-	
+
 	static int answer;
 	static int[] pArr;
 	static int[] monthArr;
-	static int[] caseArr = {1,2,3};
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,29 +23,39 @@ public class p1952 {
 			monthArr = new int[12];
 			for (int i = 0; i < 12; i++)
 				monthArr[i] = Integer.parseInt(st.nextToken());
-			
+
 			answer = pArr[3];
-			execDFS(0, new boolean[12], 0, 0);
-			System.out.println("#" + (t+1) + " " + answer);
+			execDFS(0, new int[14], 0);
+			System.out.println("#" + (t + 1) + " " + answer);
 		}
 	}
 	
-	public static void execDFS(int index, boolean[] visit, int sum, int flag){
-		if(flag == 12){
+	public static int sumVisit(int[] visit){
+		int sum = 0;
+		for (int i = 0; i < 12; i++) {
+			sum += visit[i];
+		}
+		return sum;
+	}
+
+	public static void execDFS(int index, int[] visit, int sum) {
+		if (sumVisit(visit) == 12) {
 			answer = Math.min(sum, answer);
 		}
 		for (int i = index; i < monthArr.length; i++) {
-			if(!visit[i] && !visit[(i+1)%12] && !visit[(i+2)%12]){
-				visit[i] = true; visit[(i+1)%12] = true; visit[(i+2)%12] = true;
-				execDFS((i + 3) % 12, visit, sum + pArr[2]*3, flag + 3);
-				visit[i] = false; visit[(i+1)%12] = false; visit[(i+2)%12] = false;
-			} if(!visit[i]){
-				visit[i] = true;
-				execDFS((i + 1) % 12, visit, sum + pArr[1], flag + 1);
-				execDFS((i + 1) % 12, visit, sum + pArr[0] * monthArr[i], flag + 1);
-				visit[i] = false;
+			if (visit[i] + visit[i+1] + visit[i+2] == 0) {
+				visit[i] = 1; visit[i+1] = 1; visit[i+2] = 1;
+				execDFS(i + 3, visit, sum + pArr[2]);
+				visit[i] = 0; visit[i+1] = 0; visit[i+2] = 0;
+			}
+			if (visit[i] == 0) {
+				visit[i] = 1;
+				if (pArr[1] < pArr[0] * monthArr[i])
+					execDFS(i + 1, visit, sum + pArr[1]);
+				else
+					execDFS(i + 1, visit, sum + (pArr[0] * monthArr[i]));
+				visit[i] = 0;
 			}
 		}
 	}
-
 }
