@@ -1,5 +1,8 @@
 package boj;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 //일반 DFS 시간초과 3%
 //DFS + MEMOI 런타임 50%
@@ -10,24 +13,20 @@ public class p1890 {
 	static long[][] varr;
 	static int N;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
-		Scanner sc = new Scanner(System.in);
-		N = sc.nextInt();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
 		arr = new int[N][N];
 		varr = new long[N][N];
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++)
-				arr[i][j] = sc.nextInt();
-		}
-		
-		long s = execDFS(0, 0);
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				System.out.print(varr[i][j] + " ");
+		for(int i=0; i<N; i++){
+			StringTokenizer stk = new StringTokenizer(br.readLine());
+			for(int j=0; j<N; j++){
+				arr[i][j] = Integer.parseInt(stk.nextToken());
 			}
-			System.out.println();
 		}
+			
+		long s = execDFS(0, 0);
 		System.out.println(s);
 	}
 	
