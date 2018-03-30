@@ -27,7 +27,7 @@ public class p1600 {
 	static int K, W, H;
 	static int answer = -1;
 	static int[][] map;
-	static int[][][] visited;
+	static boolean[][][] visited;
 	static int[] horsei = {-1, -2, -2, -1, 1, 2, 2, 1};
 	static int[] horsej = {-2, -1, 1, 2, 2, 1, -1, -2};
 	static int[] posi = {-1, 0, 1, 0};
@@ -40,7 +40,7 @@ public class p1600 {
 		W = Integer.parseInt(st.nextToken());
 		H = Integer.parseInt(st.nextToken());
 		map = new int[H][W];
-		visited = new int[K+1][H][W];
+		visited = new boolean[K+1][H][W];
 		for (int i = 0; i < H; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < W; j++)
@@ -53,7 +53,7 @@ public class p1600 {
 	public static void BFS(){
 		Queue<Monkey> queue = new LinkedList<>();
 		queue.add(new Monkey(0, 0, 0, K));
-		visited[K][0][0] = 1;
+		visited[K][0][0] = true;
 		while(!queue.isEmpty()){
 			Monkey m = queue.poll();
 			if(m.i == H - 1 && m.j == W - 1){
@@ -64,23 +64,19 @@ public class p1600 {
 				for (int t = 0; t < 8; t++) {
 					int ni = m.i + horsei[t];
 					int nj = m.j + horsej[t];
-					if(ni < 0 || nj < 0 || ni >= H || nj >= W || map[ni][nj] == 1)
+					if(ni < 0 || nj < 0 || ni >= H || nj >= W || map[ni][nj] == 1 || visited[m.hsize - 1][ni][nj])
 						continue;
-					if(visited[m.hsize - 1][ni][nj] == 0 || visited[m.hsize - 1][ni][nj] > m.count + 1){
-						visited[m.hsize - 1][ni][nj] = m.count + 1;
-						queue.offer(new Monkey(ni, nj, m.count + 1, m.hsize - 1));
-					}
+					visited[m.hsize - 1][ni][nj] = true;
+					queue.offer(new Monkey(ni, nj, m.count + 1, m.hsize - 1));
 				}
 			}
 			for (int k = 0; k < 4; k++) {
 				int ni = m.i + posi[k];
 				int nj = m.j + posj[k];
-				if(ni < 0 || nj < 0 || ni >= H || nj >= W || map[ni][nj] == 1)
+				if(ni < 0 || nj < 0 || ni >= H || nj >= W || map[ni][nj] == 1 || !visited[m.hsize][ni][nj])
 					continue;
-				if(visited[m.hsize][ni][nj] == 0 || visited[m.hsize][ni][nj] > m.count + 1){
-					visited[m.hsize][ni][nj] = m.count + 1;
-					queue.offer(new Monkey(ni, nj, m.count + 1, m.hsize));
-				}
+				visited[m.hsize][ni][nj] = true;
+				queue.offer(new Monkey(ni, nj, m.count + 1, m.hsize));
 			}
 		}
 	}
