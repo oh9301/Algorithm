@@ -21,7 +21,6 @@ class Beaver{
 }
 
 public class p3055 {
-	
 	static int answer, R, C;
 	static char[][] map;
 	static int[][] visited;
