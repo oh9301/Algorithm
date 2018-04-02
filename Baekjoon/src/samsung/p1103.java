@@ -23,6 +23,7 @@ public class p1103 {
 	
 	static int N, M, answer;
 	static int[][] map;
+	static int[][] visited;
 	static int[] posi = {-1, 0, 1, 0};
 	static int[] posj = {0, -1, 0, 1};
 
@@ -42,15 +43,14 @@ public class p1103 {
 					map[i][j] = c - '0';
 			}
 		}
+		visited = new int[N][M];
 		BFS();
 		System.out.println(answer);
 	}
 	
 	public static void BFS(){
-		boolean[][] visited = new boolean[N][M];
 		Queue<Coin> queue = new LinkedList<>();
 		queue.add(new Coin(0, 0, 1));
-		visited[0][0] = true;
 		while(!queue.isEmpty()){
 			Coin c = queue.poll();
 			for (int k = 0; k < 4; k++) {
@@ -58,19 +58,47 @@ public class p1103 {
 				int cj = c.y + posj[k]*map[c.x][c.y];
 				if(ci < 0 || cj < 0 || ci >= N || cj >= M || map[ci][cj] == 0){
 					answer = Math.max(answer, c.count);
+					if(answer > N*M){
+						answer = -1;
+						return;
+					}
 					continue;
 				}
-				if(!visited[ci][cj]){
-					visited[ci][cj] = true;
+				if(visited[ci][cj] < c.count + 1){
+					visited[ci][cj] = c.count + 1;
 					queue.add(new Coin(ci, cj, c.count + 1));
 				} else{
-					System.out.println(c.x + " " + c.y);
-					System.out.println(ci + " " + cj);
-					answer = -1;
-					return;
+					continue;
 				}
 			}
 		}
 	}
-
 }
+
+/*
+24 24
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+12H12H12H12H12H12H12H12H
+2HH2HH2HH2HH2HH2HH2HH2HH
+HHHHHHHHHHHHHHHHHHHHHHHH
+*/
