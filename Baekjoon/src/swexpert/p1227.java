@@ -54,6 +54,22 @@ public class p1227 {
 	public static void bfs(){
 		Queue<MP> queue = new LinkedList<>();
 		queue.add(new MP(si, sj));
-		
+		while(!queue.isEmpty()){
+			MP p = queue.poll();
+			if(p.i == ei && p.j == ej){
+				answer = 1;
+				return;
+			}
+			for (int k = 0; k < 4; k++) {
+				int ni = p.i + posi[k];
+				int nj = p.j + posj[k];
+				if(ni < 0 || nj < 0 || ni >= 100 || nj >= 100)
+					continue;
+				if(map[ni][nj] != '1'){
+					map[ni][nj] = '1';
+					queue.add(new MP(ni, nj));
+				}
+			}
+		}
 	}
 }
